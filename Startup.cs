@@ -37,6 +37,13 @@ namespace Mission09_hwatso02
 
             //de-couple
             services.AddScoped<IBookstoreRepository, EFBookstoreRepository>();
+
+            //razor pages
+            services.AddRazorPages();
+
+            //sessions
+            services.AddDistributedMemoryCache();
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,7 +56,7 @@ namespace Mission09_hwatso02
 
             //refers to wwwroot
             app.UseStaticFiles();
-
+            app.UseSession();
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
@@ -68,6 +75,8 @@ namespace Mission09_hwatso02
 
                 //set endpoints
                 endpoints.MapDefaultControllerRoute();
+
+                endpoints.MapRazorPages();
             });
         }
     }
