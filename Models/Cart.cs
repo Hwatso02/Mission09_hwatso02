@@ -12,11 +12,11 @@ namespace Mission09_hwatso02.Models
 
         public void AddItem (Book book, int qty)
         {
-            CartLineItem line = Items
+            CartLineItem Line = Items
                 .Where(b => b.Book.BookId == book.BookId)
                 .FirstOrDefault();
 
-            if (line == null)
+            if (Line == null)
             {
                 Items.Add(new CartLineItem
                 {
@@ -26,10 +26,11 @@ namespace Mission09_hwatso02.Models
             }
             else
             {
-                line.Quantity += qty;
+                Line.Quantity += qty;
             }
         }
 
+     //total sum of all cart items
     public double CalculateTotal()
     {
             double sum = Items.Sum(b => b.Quantity * b.Book.Price);
@@ -38,6 +39,7 @@ namespace Mission09_hwatso02.Models
     }
 }
 
+    //list important things to show in cart
     public class CartLineItem
     {
         public int LineID { get; set; }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Mission09_hwatso02.Infrastructure;
 using Mission09_hwatso02.Models;
 
 namespace Mission09_hwatso02.Pages
@@ -18,20 +19,26 @@ namespace Mission09_hwatso02.Pages
         }
 
         public Cart cart { get; set; }
+        public string ReturnUrl { get; set; }
 
-        public void OnGet(Cart c)
+        //keep items in cart, or create new if empty
+        public void OnGet(string returnUrl)
         {
-            cart = c;
+            ReturnUrl = returnUrl ?? "/";
+            cart = HttpContext.Session.GetJson<Cart>("cart") ?? new Cart();
         }
 
-        public IActionResult OnPost(int bookId)
+        //when adding an item to cart, update if there's already things there
+        public IActionResult OnPost(int bookId, string returnUrl)
         {
             Book b = repo.Books.FirstOrDefault(b => b.BookId == bookId);
 
-            cart = new Cart();
+            cart = HttpContext.Session.GetJson<Cart>("cart") ?? new Cart();
             cart.AddItem(b, 1);
 
-            return RedirectToPage(cart);
+            HttpContext.Session.SetJson("cart", cart);
+
+            return RedirectToPage(new { ReturnUrl = returnUrl });
         }
     }
 }

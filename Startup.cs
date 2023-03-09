@@ -67,7 +67,7 @@ namespace Mission09_hwatso02
 
                 //if given only the page number
                 endpoints.MapControllerRoute("Paging", "Page{pageNum}", 
-                    new { Controller = "Home", action = "Index", pageNum = 1 });
+                    new { Controller = "Home", action = "Index" });
 
                 //if given only the category
                 endpoints.MapControllerRoute("category", "{Category}",
