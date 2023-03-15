@@ -20,5 +20,7 @@ namespace Mission09_hwatso02.Models
         }
 
         public DbSet<Book> Books { get; set; }
+        //add second table
+        public DbSet<Purchase> Purchases { get; set; }
     }
 }
