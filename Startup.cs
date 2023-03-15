@@ -37,6 +37,7 @@ namespace Mission09_hwatso02
 
             //de-couple
             services.AddScoped<IBookstoreRepository, EFBookstoreRepository>();
+            services.AddScoped<IPurchaseRepository, EFPurchaseRepository>();
 
             //razor pages
             services.AddRazorPages();
