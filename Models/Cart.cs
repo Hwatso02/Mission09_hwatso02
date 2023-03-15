@@ -10,7 +10,7 @@ namespace Mission09_hwatso02.Models
         //declare and instantiate
         public List<CartLineItem> Items { get; set; } = new List<CartLineItem>();
 
-        public void AddItem (Book book, int qty)
+        public virtual void AddItem (Book book, int qty)
         {
             CartLineItem Line = Items
                 .Where(b => b.Book.BookId == book.BookId)
@@ -30,14 +30,26 @@ namespace Mission09_hwatso02.Models
             }
         }
 
-     //total sum of all cart items
-    public double CalculateTotal()
-    {
-            double sum = Items.Sum(b => b.Quantity * b.Book.Price);
+        //be able to remove a book from cart
+        public virtual void RemoveItem (Book book)
+        {
+            Items.RemoveAll(b => b.Book.BookId == book.BookId);
+        }
 
-            return sum;
+        //be able to clear whole cart
+        public virtual void ClearCart()
+        {
+            Items.Clear();
+        }
+
+         //total sum of all cart items
+        public double CalculateTotal()
+        {
+                double sum = Items.Sum(b => b.Quantity * b.Book.Price);
+
+                return sum;
+        }
     }
-}
 
     //list important things to show in cart
     public class CartLineItem

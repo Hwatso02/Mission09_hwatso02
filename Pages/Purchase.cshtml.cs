@@ -10,22 +10,21 @@ using Mission09_hwatso02.Models;
 namespace Mission09_hwatso02.Pages
 {
     public class PurchaseModel : PageModel
-    {
-        //load up data since there isn't a controller
-        private IBookstoreRepository repo { get; set; }
-        public PurchaseModel (IBookstoreRepository temp)
-        {
-            repo = temp;
-        }
-
+    {        
         public Cart cart { get; set; }
         public string ReturnUrl { get; set; }
+        //load up data since there isn't a controller
+        private IBookstoreRepository repo { get; set; }
+        public PurchaseModel (IBookstoreRepository temp, Cart c)
+        {
+            repo = temp;
+            cart = c;
+        }
 
         //keep items in cart, or create new if empty
         public void OnGet(string returnUrl)
         {
             ReturnUrl = returnUrl ?? "/";
-            cart = HttpContext.Session.GetJson<Cart>("cart") ?? new Cart();
         }
 
         //when adding an item to cart, update if there's already things there
@@ -33,10 +32,15 @@ namespace Mission09_hwatso02.Pages
         {
             Book b = repo.Books.FirstOrDefault(b => b.BookId == bookId);
 
-            cart = HttpContext.Session.GetJson<Cart>("cart") ?? new Cart();
             cart.AddItem(b, 1);
 
-            HttpContext.Session.SetJson("cart", cart);
+            return RedirectToPage(new { ReturnUrl = returnUrl });
+        }
+
+        //after removing a book, go back to Cart page
+        public IActionResult OnPostRemove(int bookId, string returnUrl)
+        {
+            cart.RemoveItem(cart.Items.First(b => b.Book.BookId == bookId).Book);
 
             return RedirectToPage(new { ReturnUrl = returnUrl });
         }

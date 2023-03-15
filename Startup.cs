@@ -44,6 +44,9 @@ namespace Mission09_hwatso02
             //sessions
             services.AddDistributedMemoryCache();
             services.AddSession();
+
+            services.AddScoped<Cart>(c => SessionCart.GetCart(c));
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
